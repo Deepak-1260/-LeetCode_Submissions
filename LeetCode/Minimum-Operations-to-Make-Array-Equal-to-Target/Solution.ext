@@ -1,0 +1,32 @@
+class Solution {
+    public long gen(ArrayList<Integer> arr){
+        long ans=Math.abs(arr.get(0));
+        
+        for(int i=1;i<arr.size();i++){
+            int x=Math.abs(arr.get(i));
+            int y=Math.abs(arr.get(i-1));
+            ans+=Math.max(x-y,0);
+        }
+        return ans;
+    }
+    public long minimumOperations(int[] nums, int[] target) {
+        ArrayList<Integer> arr=new ArrayList<>();
+        int n=nums.length;
+        long ans=0;
+       
+        for(int i=0;i<n;i++){
+          nums[i]=nums[i]-target[i];   
+        }
+        arr.add(nums[0]);
+        for(int i=1;i<n;i++){
+            if((nums[i]>=0 && nums[i-1]<0)||(nums[i]<0 && nums[i-1]>=0)){
+                ans+=gen(arr);
+                arr=new ArrayList<>();
+                
+            }
+            arr.add(nums[i]);
+        }
+        ans+=gen(arr);
+        return ans;
+    }
+}
