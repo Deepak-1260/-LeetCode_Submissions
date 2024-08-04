@@ -1,0 +1,49 @@
+class Solution {
+    public int fun(HashMap<Integer,ArrayList<Integer>> hm,int n){
+        Queue<Integer> q=new LinkedList<>();
+        HashSet<Integer> hs=new HashSet<>();
+        q.add(0);
+        hs.add(0);
+        q.add(-1);
+        int c=1;
+        
+        while(q.size()>1){
+
+           int x=q.remove();
+            
+            if(x!=-1){
+               // System.out.println(x);
+            for(int y:hm.get(x)){
+                if(y==n) return c;
+                if(hs.contains(y)==false){
+                  q.add(y);
+                hs.add(y);
+              }
+            }
+           }
+            else{
+                q.add(-1);
+                c++;
+            }
+        }
+        return c;
+    }
+    public int[] shortestDistanceAfterQueries(int n, int[][] q) {
+    HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
+    for (int i = 0; i < n - 1; i++) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(i + 1);
+        hm.put(i, arr);
+    }
+    int m = q.length;
+    int ans[] = new int[m];
+    for (int i = 0; i < m; i++) {
+        if (!hm.containsKey(q[i][0])) {
+            hm.put(q[i][0], new ArrayList<>());
+        }
+        hm.get(q[i][0]).add(q[i][1]);
+        ans[i] = fun(hm, n - 1);
+    }
+    return ans;
+}
+}
