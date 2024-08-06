@@ -1,0 +1,50 @@
+class Solution {
+    public int[] shortestDistanceAfterQueries(int n, int[][] q) {
+        //HashMap<Integer,ArrayList<Integer>> hm=new HashMap<>();
+        HashSet<Integer> hs=new HashSet<>();
+       int min=q[0][0];
+       int max=q[0][1];
+       int temp=max-min-1;
+       for(int i=min+1;i<max;i++) hs.add(i);
+      int[] arr=new int[n];
+       Arrays.fill(arr,-1);
+
+       int m=q.length;
+       int ans[]=new int[m];
+       arr[min]=max;
+       ans[0]=n-temp-1;
+       temp=ans[0];
+       for(int i=1;i<m;i++){
+        int start=q[i][0];
+        int end=q[i][1];
+        if(hs.contains(start)){
+            ans[i]=temp;
+        }
+        else{
+            int j=start;
+            int cnt=0;
+            while(j<end){
+                if(arr[j]!=-1){
+                    if(j!=start){
+                        hs.add(j);
+                    }
+                    j=arr[j]-1;
+                    cnt++;
+                }
+                else{
+                    if(j!=start){
+                        hs.add(j);
+                    }
+                    cnt++;
+                }
+                j++;
+            }
+            temp-=cnt-1;
+            ans[i]=temp;
+            arr[start]=end;
+        }
+       }
+       return ans;
+
+    }
+}
